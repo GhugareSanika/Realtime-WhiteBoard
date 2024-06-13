@@ -35,7 +35,12 @@ const App: React.FC = () => {
         console.log("userJoined error");
       }
     });
+    // Cleanup socket connection on unmount
+    // return () => {
+    //   socket.off("userIsJoined");
+    // };
   }, []);
+
 
   const uuid = () => {
     let S4 = () => {

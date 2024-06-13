@@ -163,9 +163,8 @@
 // }
 // export default WhiteBoard;
 
-import React, { useEffect, useLayoutEffect, useState, RefObject} from "react";
+import React, { useEffect, useLayoutEffect, useState, RefObject } from "react";
 import rough from "roughjs";
-//import rough from "roughjs/bundled/rough.esm";
 
 interface Element {
   offsetX: number;
@@ -185,7 +184,6 @@ interface User {
 interface CanvasProps {
   canvasRef: RefObject<HTMLCanvasElement>;
   ctx: RefObject<CanvasRenderingContext2D | null>;
-  //ctxRef: React.MutableRefObject<CanvasRenderingContext2D | null>; // Include ctxRef in the interface
   color: string;
   setElements: React.Dispatch<React.SetStateAction<Element[]>>;
   elements: Element[];
@@ -204,20 +202,16 @@ const Canvas: React.FC<CanvasProps> = ({
   elements, 
   tool, 
   socket,
-  user }) => {
-
-    if(!user?.presenter){
-      return(
-        <div className="border border-dark border-3 h-100 w-100 overflow-hidden">
-          <img 
-          src=""
-          alt="Real time white board image shared by presenter"
-          className="w-100 h-100"/>
-        </div>
-      )
-    }
-
+  user 
+}) => {
   const [isDrawing, setIsDrawing] = useState(false);
+  const [img, setImg] = useState<string | undefined>("");
+
+  useEffect(() => {
+    socket.on("whiteBoardDataResponse", (data: { imgURL: string }) => {
+      setImg(data.imgURL);
+    });
+  }, [socket]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -233,10 +227,9 @@ const Canvas: React.FC<CanvasProps> = ({
         context.scale(2, 2);
         context.lineCap = "round";
         context.strokeStyle = color;
-        context.lineWidth = 5;
       }
     }
-  }, []);
+  }, [canvasRef, color]);
 
   useEffect(() => {
     if (ctx.current) {
@@ -244,35 +237,11 @@ const Canvas: React.FC<CanvasProps> = ({
     }
   }, [color]);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    const { offsetX, offsetY } = e.nativeEvent;
-
-    if (tool === "pencil") {
-      setElements((prevElements) => [
-        ...prevElements,
-        {
-          offsetX,
-          offsetY,
-          path: [[offsetX, offsetY]],
-          stroke: color,
-          element: tool,
-        } as Element,
-      ]);
-    } else {
-      setElements((prevElements) => [
-        ...prevElements,
-        { offsetX, offsetY, stroke: color, element: tool }as Element,
-      ]);
-    }
-
-    setIsDrawing(true);
-  };
-
   useLayoutEffect(() => {
     const canvasElement = canvasRef.current;
     if (!canvasElement) return; // Check if canvasRef.current is null
     const roughCanvas = rough.canvas(canvasElement);
-    
+
     if (elements.length > 0 && ctx.current) {
       ctx.current.clearRect(
         0,
@@ -281,7 +250,7 @@ const Canvas: React.FC<CanvasProps> = ({
         canvasElement.height
       );
     }
-    elements.forEach((ele, i) => {
+    elements.forEach((ele) => {
       if (ele.element === "rect") {
         roughCanvas.draw(
           generator.rectangle(ele.offsetX, ele.offsetY, ele.width || 0, ele.height || 0, {
@@ -307,18 +276,37 @@ const Canvas: React.FC<CanvasProps> = ({
       }
     });
 
-  //   const canvasImage = canvasRef.current?.toDataURL();
-  //   if (canvasImage) {
-  //     socket.emit("drawing", canvasImage);
-  //   }
-  // }, [elements]);
-  const canvasImage = canvasRef.current?.toDataURL();
+    const canvasImage = canvasRef.current?.toDataURL();
     if (canvasImage && socket) {
       socket.emit("drawing", canvasImage);
     } else {
       console.error("Socket is undefined or canvas image is null");
     }
-  }, [elements]);
+  }, [elements, canvasRef, socket]);
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const { offsetX, offsetY } = e.nativeEvent;
+
+    if (tool === "pencil") {
+      setElements((prevElements) => [
+        ...prevElements,
+        {
+          offsetX,
+          offsetY,
+          path: [[offsetX, offsetY]],
+          stroke: color,
+          element: tool,
+        } as Element,
+      ]);
+    } else {
+      setElements((prevElements) => [
+        ...prevElements,
+        { offsetX, offsetY, stroke: color, element: tool } as Element,
+      ]);
+    }
+
+    setIsDrawing(true);
+  };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isDrawing) {
@@ -352,7 +340,7 @@ const Canvas: React.FC<CanvasProps> = ({
                 height: offsetY,
                 stroke: ele.stroke,
                 element: ele.element,
-              }
+              } 
             : ele
         )
       );
@@ -373,10 +361,24 @@ const Canvas: React.FC<CanvasProps> = ({
     }
   };
 
-
   const handleMouseUp = () => {
     setIsDrawing(false);
   };
+
+  if (!user?.presenter) {
+    return (
+      <div className="border border-dark border-3 h-100 w-100 overflow-hidden">
+        <img 
+          src={img}
+          alt="Real-time whiteboard image shared by presenter"
+          style={{
+            height: window.innerHeight * 2,
+            width: "285%",
+          }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div
