@@ -2,6 +2,15 @@ import React, { useRef, useState } from 'react';
 import './index.css';
 import WhiteBoard from '../../components/Whiteboard';
 
+
+interface RoomData {
+    name: string;
+    roomId: string;
+    userId: string;
+    host: boolean;
+    presenter: boolean;
+}
+
 interface User {
     presenter: boolean;
     [key: string]: any; // Add additional properties as needed
@@ -10,9 +19,10 @@ interface User {
 interface RoomPageProps {
     user: User; // Include user in the interface
     socket: any; // Add socket to the interface
+    users: RoomData[]
 }
 
-const RoomPage: React.FC<RoomPageProps> = ({ user, socket }) => {
+const RoomPage: React.FC<RoomPageProps> = ({ user, socket,users}) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const ctx = useRef<CanvasRenderingContext2D | null>(null);
 
@@ -20,6 +30,7 @@ const RoomPage: React.FC<RoomPageProps> = ({ user, socket }) => {
     const [color, setColor] = useState<string>("black");
     const [elements, setElements] = useState<any[]>([]);
     const [history, setHistory] = useState<any[]>([]);
+    const [openedUserTab, setOpenedUserTab] = useState(false);
 
     const handleClearCanvas = () => {
         const canvas = canvasRef.current;
@@ -55,8 +66,46 @@ const RoomPage: React.FC<RoomPageProps> = ({ user, socket }) => {
 
     return (
         <div className="row">
+            <button 
+                type="button" 
+                className="btn btn-dark"
+                style={{
+                    display: "block",
+                    position: "absolute",
+                    top: "5%",
+                    left: "5%",
+                    height: "40px",
+                    width: "100px",
+                }}
+                onClick={() => setOpenedUserTab(true)}
+            >
+                Users
+            </button>
+            {openedUserTab && (
+                    <div className="position-fixed top-0 h-100 text-white bg-dark"
+                        style={{ width:"250px", left: "0%"}}
+                    >
+                        <button 
+                            type="button" 
+                            onClick={() => setOpenedUserTab(false)}
+                            className="btn btn-light btn-block w-100 mt-5"
+                        >
+                            Close
+                        </button>
+                        <div className="w-100 mt-5 pt-5">
+                        {
+                            users.map((usr, index) =>(
+                                <p key={index * 999} className="my-2 text-center w-100">
+                                    {usr.name} {user && user.userId === usr.userId && "(You)"}
+                                </p>
+                            ))
+                        }
+                        </div>
+                    </div>
+                )
+            }
             <h1 className="text-center py-3">White Board Sharing App{" "}
-                <span className="text-primary">[Users Online : 0]</span>
+                <span className="text-primary">[Users Online : {users.length}]</span>
             </h1>
             {user.presenter && (
                 <div className="col-md-10 mx-auto px-5 mb-3 d-flex align-items-center justify-content-center">

@@ -26,19 +26,21 @@ const socket = io(server, connectionOptions);
 
 const App: React.FC = () => {
   const [user, setUser] = useState<RoomData | null>(null);
+  const [users,setUsers] = useState([]);
 
   useEffect(() => {
     socket.on("userIsJoined", (data) => {
       if (data.success) {
         console.log("userJoined");
+        setUsers(data.users);
       } else {
         console.log("userJoined error");
       }
     });
-    // Cleanup socket connection on unmount
-    // return () => {
-    //   socket.off("userIsJoined");
-    // };
+
+    socket.on("allUsers",(data) =>{
+      setUsers(data);
+    })
   }, []);
 
 
@@ -68,7 +70,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Forms uuid={uuid} socket={socket} setUser={setUser} />} />
         <Route
           path="/:roomId"
-          element={user ? <RoomPage user={user} socket={socket} /> : <Navigate to="/" />}
+          element={user ? <RoomPage user={user} socket={socket} users={users}/> : <Navigate to="/" />}
         />
       </Routes>
     </div>
