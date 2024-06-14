@@ -1,45 +1,3 @@
-// import express, { Request, Response } from "express";
-// import http from "http";
-// import { Server, Socket } from "socket.io";
-
-// const app = express();
-// const server = http.createServer(app);
-// const io = new Server(server);
-
-// // Routes
-// app.get("/", (req: Request, res: Response) => {
-//     res.send("This is the MERN Realtime WhiteBoard sharing app");
-// });
-
-// let roomIdGlobal: string | undefined;
-// let imgURLGlobal: string | undefined;
-
-// io.on("connection", (socket: Socket) => {
-//     socket.on("userJoined", (data: { name: string; userId: string; roomId: string; host: boolean; presenter: boolean }) => {
-//         const {name,userId,roomId, host, presenter } = data;
-//         roomIdGlobal = roomId;
-//         socket.join(roomId);
-//         socket.emit("userIsJoined", { success: true });
-//         socket.broadcast.to(roomId).emit("whiteBoardDataResponse", {
-//             imgURL: imgURLGlobal,
-//         });
-//     });
-
-//     socket.on("whiteBoardDataResponse", (data: string) => {
-//         imgURLGlobal = data;
-//         if (roomIdGlobal) {
-//             socket.broadcast.to(roomIdGlobal).emit("whiteBoardDataResponse", {
-//                 imgURL: data,
-//             });
-//         }
-//     });
-// });
-
-// const port = process.env.PORT || 5000;
-
-// server.listen(port, () => console.log(`Server is running on http://localhost:${port}`));
-
-
 import express, { Request, Response } from "express";
 import http from "http";
 import { Server, Socket } from "socket.io";
@@ -48,30 +6,35 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-// const io= new Server(server,{
-//     cors:{
-//         origin:"*",
-//         methods:["GET","POST"],
-//     },
-// })
+// Store image URLs for each room
+const roomImages: Map<string, string | undefined> = new Map();
+// Store users for each room
+const roomUsers: Map<string, { name: string; userId: string; host: boolean; presenter: boolean }[]> = new Map();
+
+function addUser(data: { name: string; userId: string; roomId: string; host: boolean; presenter: boolean }) {
+    const { name, userId, roomId, host, presenter } = data;
+    let users = roomUsers.get(roomId) || [];
+    users.push({ name, userId, host, presenter });
+    roomUsers.set(roomId, users);
+    return users;
+}
 
 // Routes
 app.get("/", (req: Request, res: Response) => {
     res.send("This is the MERN Realtime WhiteBoard sharing app");
 });
 
-// Store image URLs for each room
-const roomImages: Map<string, string | undefined> = new Map();
-
 io.on("connection", (socket: Socket) => {
     socket.on("userJoined", (data: { name: string; userId: string; roomId: string; host: boolean; presenter: boolean }) => {
         const { name, userId, roomId, host, presenter } = data;
         socket.join(roomId);
-        socket.emit("userIsJoined", { success: true });
+        const users = addUser(data);
+        socket.emit("userIsJoined", { success: true, users });
+        socket.broadcast.to(roomId).emit("allUsers", users);
 
         // Send the latest whiteboard image to the newly joined user
         const imgURL = roomImages.get(roomId);
-        socket.emit("whiteBoardDataResponse", { imgURL });
+        socket.broadcast.to(roomId).emit("whiteBoardDataResponse", { imgURL });
 
         socket.broadcast.to(roomId).emit("userJoined", { name, userId, host, presenter });
     });

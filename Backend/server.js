@@ -38,13 +38,13 @@ var http_1 = require("http");
 var socket_io_1 = require("socket.io");
 var app = (0, express_1.default)();
 var server = http_1.default.createServer(app);
-//const io = new Server(server);
-var io = new socket_io_1.Server(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"],
-    },
-});
+var io = new socket_io_1.Server(server);
+// const io= new Server(server,{
+//     cors:{
+//         origin:"*",
+//         methods:["GET","POST"],
+//     },
+// })
 // Routes
 app.get("/", function (req, res) {
     res.send("This is the MERN Realtime WhiteBoard sharing app");
@@ -55,10 +55,12 @@ io.on("connection", function (socket) {
     socket.on("userJoined", function (data) {
         var name = data.name, userId = data.userId, roomId = data.roomId, host = data.host, presenter = data.presenter;
         socket.join(roomId);
-        socket.emit("userIsJoined", { success: true });
+        var users = addUser(data);
+        socket.emit("userIsJoined", { success: true, users: users });
+        socket.broadcast.to(roomId).emit("allUsers", users);
         // Send the latest whiteboard image to the newly joined user
         var imgURL = roomImages.get(roomId);
-        socket.emit("whiteBoardDataResponse", { imgURL: imgURL });
+        socket.broadcast.to(roomId).emit("whiteBoardDataResponse", { imgURL: imgURL });
         socket.broadcast.to(roomId).emit("userJoined", { name: name, userId: userId, host: host, presenter: presenter });
     });
     socket.on("whiteBoardDataResponse", function (data) {
