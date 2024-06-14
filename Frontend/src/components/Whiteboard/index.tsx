@@ -204,14 +204,31 @@ const Canvas: React.FC<CanvasProps> = ({
   socket,
   user 
 }) => {
-  const [isDrawing, setIsDrawing] = useState(false);
   const [img, setImg] = useState<string | undefined>("");
+  const [isDrawing, setIsDrawing] = useState(false);
 
   useEffect(() => {
     socket.on("whiteBoardDataResponse", (data: { imgURL: string }) => {
       setImg(data.imgURL);
     });
   }, [socket]);
+
+  if (!user?.presenter) {
+    return (
+      <div className="border border-dark border-3 h-100 w-100 overflow-hidden">
+        <img 
+          src={img}
+          alt="Real-time whiteboard image shared by presenter"
+          style={{
+            height: window.innerHeight * 2,
+            width: "235%",
+          }}
+        />
+      </div>
+    );
+  }
+
+  
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -278,7 +295,7 @@ const Canvas: React.FC<CanvasProps> = ({
 
     const canvasImage = canvasRef.current?.toDataURL();
     if (canvasImage && socket) {
-      socket.emit("drawing", canvasImage);
+      socket.emit("whiteBoardDataResponse", canvasImage);
     } else {
       console.error("Socket is undefined or canvas image is null");
     }
@@ -365,25 +382,11 @@ const Canvas: React.FC<CanvasProps> = ({
     setIsDrawing(false);
   };
 
-  if (!user?.presenter) {
-    return (
-      <div className="border border-dark border-3 h-100 w-100 overflow-hidden">
-        <img 
-          src={img}
-          alt="Real-time whiteboard image shared by presenter"
-          style={{
-            height: window.innerHeight * 2,
-            width: "285%",
-          }}
-        />
-      </div>
-    );
-  }
 
   return (
     <div
-      className="col-md-8 overflow-hidden border border-dark px-0 mx-auto mt-3"
-      style={{ height: "500px" }}
+      className="col-md-11 overflow-hidden border border-dark border-3 px-0 mx-auto mt-3"
+      style={{ height: "460px" }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
