@@ -5,6 +5,7 @@ import Forms from './components/Forms';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import RoomPage from './pages/RoomPage';
 import io from 'socket.io-client';
+import { ToastContainer, toast } from 'react-toastify';
 
 interface RoomData {
   name: string;
@@ -41,7 +42,18 @@ const App: React.FC = () => {
     socket.on("allUsers",(data) =>{
       setUsers(data);
     })
+
+    socket.on ("userJoinedMessageBroadcasted",(data) =>{
+      console.log(`${data} joined the room`);
+      toast.info(`${data} joined the room`);
+    })
+
+    // socket.on ("userJoinedMessageBroadcasted",(data) =>{
+    //   console.log(`${data} left the room`);
+    //   toast.info(`${data} left the room`);
+    // })
   }, []);
+
 
 
   const uuid = () => {
@@ -66,6 +78,7 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
+      <ToastContainer/>
       <Routes>
         <Route path="/" element={<Forms uuid={uuid} socket={socket} setUser={setUser} />} />
         <Route
