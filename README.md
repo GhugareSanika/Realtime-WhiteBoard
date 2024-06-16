@@ -1,7 +1,8 @@
 # Realtime Whiteboard Sharing App
 
 This is a Realtime Whiteboard Sharing App built with TypeScript, React.js, and Socket.io for collaborative drawing. Users can create and join rooms to draw together on a shared canvas in real-time.
-
+## Demo 
+**Check-it** : https://realtime-whiteboard-sharing-app.netlify.app/
 ## Features
 
 - **Create Room**: Allows a user to create a new room.
