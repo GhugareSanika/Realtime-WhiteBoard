@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState, useRef, RefObject } from "react";
+import React, { useEffect, useLayoutEffect, useState, RefObject } from "react";
 import rough from "roughjs";
 
 interface Element {
@@ -18,6 +18,7 @@ interface User {
 
 interface CanvasProps {
   canvasRef: RefObject<HTMLCanvasElement>;
+  ctx: React.MutableRefObject<CanvasRenderingContext2D | null>; // Use MutableRefObject here
   color: string;
   setElements: React.Dispatch<React.SetStateAction<Element[]>>;
   elements: Element[];
@@ -30,6 +31,7 @@ const generator = rough.generator();
 
 const Canvas: React.FC<CanvasProps> = ({ 
   canvasRef, 
+  ctx, 
   color, 
   setElements, 
   elements, 
@@ -38,7 +40,6 @@ const Canvas: React.FC<CanvasProps> = ({
   user 
 }) => {
   const [img, setImg] = useState<string | undefined>("");
-  const ctx = useRef<CanvasRenderingContext2D | null>(null); // Use useRef for mutable context reference
 
   useEffect(() => {
     socket.on("whiteBoardDataResponse", (data: { imgURL: string }) => {
@@ -74,16 +75,16 @@ const Canvas: React.FC<CanvasProps> = ({
         context.lineWidth = 2;
         context.lineCap = "round";
         context.strokeStyle = color;
-        ctx.current = context; // Assign context to the mutable reference
+        ctx.current = context; // Set the context in the mutable ref
       }
     }
-  }, [canvasRef, color]);
+  }, [canvasRef, color, ctx]);
 
   useEffect(() => {
     if (ctx.current) {
       ctx.current.strokeStyle = color;
     }
-  }, [color]);
+  }, [color, ctx]);
 
   useLayoutEffect(() => {
     const canvasElement = canvasRef.current;
@@ -126,7 +127,7 @@ const Canvas: React.FC<CanvasProps> = ({
     } else {
       console.error("Socket is undefined or canvas image is null");
     }
-  }, [elements, canvasRef, socket]);
+  }, [elements, canvasRef, socket, ctx]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const { offsetX, offsetY } = e.nativeEvent;
