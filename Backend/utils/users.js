@@ -1,11 +1,4 @@
 "use strict";
-// interface User {
-//     name: string;
-//     userId: string;
-//     roomId: string;
-//     host: boolean;
-//     presenter: boolean;
-// }
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUsersInRoom = exports.getUser = exports.removeUser = exports.addUser = void 0;
 var users = [];
