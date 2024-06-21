@@ -23,14 +23,18 @@ interface RoomData {
 // Define the Forms component with TypeScript
 const Forms: React.FC<FormsProps> = ({ uuid, socket, setUser }) => {
   return (
-    <div className="row h-100 pt-5">
-      <div className="col-md-4 mt-5 form-box p-5 border border-2 border-primary rounded-2 mx-auto d-flex flex-column align-items-center">
-        <h1 className="text-primary fn-bold">Create Room</h1>
-        <CreateRoomForm uuid={uuid} socket={socket} setUser={setUser} />
-      </div>
-      <div className="col-md-4 mt-5 form-box p-5 border border-2 border-primary rounded-2 mx-auto d-flex flex-column align-items-center">
-        <h1 className="text-primary fn-bold">Join Room</h1>
-        <JoinRoomForm uuid={uuid} socket={socket} setUser={setUser} />
+    <div className="background-container">
+      <div className="content-container">
+        <div className="row h-100 pt-5">
+          <div className="col-md-4 mt-5 form-box p-5 border border-0 border-black rounded-4 mx-auto d-flex flex-column align-items-center">
+            <h1 className="text-black fn-bold">Create Room</h1>
+            <CreateRoomForm uuid={uuid} socket={socket} setUser={setUser} />
+          </div>
+          <div className="col-md-4 mt-5 form-box p-5 border border-0 border-black rounded-4 mx-auto d-flex flex-column align-items-center">
+            <h1 className="text-black fn-bold">Join Room</h1>
+            <JoinRoomForm uuid={uuid} socket={socket} setUser={setUser} />
+          </div>
+        </div>
       </div>
     </div>
   );

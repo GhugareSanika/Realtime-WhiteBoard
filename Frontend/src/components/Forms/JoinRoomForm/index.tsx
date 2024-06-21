@@ -43,7 +43,7 @@ const JoinRoomForm: React.FC<JoinRoomFormProps> = ({ uuid, socket, setUser }) =>
       <div className="form-group bg-grey">
         <input
           type="text"
-          className="form-control my-2"
+          className="form-control my-3 border border-2 border-black"
           placeholder="Enter Your Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -52,13 +52,13 @@ const JoinRoomForm: React.FC<JoinRoomFormProps> = ({ uuid, socket, setUser }) =>
       <div className="form-group">
         <input
           type="text"
-          className="form-control my-2 border-0"
+          className="form-control my-2 border border-2 border-black"
           placeholder="Enter Room Code"
           value={roomId}
           onChange={(e) => setRoomId(e.target.value)}
         />
       </div>
-      <button type="submit" className="mt-4 btn btn-primary btn-block form-control">
+      <button type="submit" className="mt-4 btn btn-primary btn-block form-control"  style={{ backgroundColor: "#06b6d4", color: "white", border: "none" }}>
         Join Room
       </button>
     </form>

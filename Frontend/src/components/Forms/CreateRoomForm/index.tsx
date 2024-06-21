@@ -41,10 +41,10 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ uuid , socket, setUser}
 
   return (
     <form className="form col-md-12 mt-5">
-      <div className="form-group bg-grey">
+      <div className="form-group bg-grey ">
         <input
           type="text"
-          className="form-control my-2"
+          className="form-control my-2 border border-2 border-black"
           placeholder="Enter Your Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -64,12 +64,14 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ uuid , socket, setUser}
               className="btn btn-primary btn-sm mr-1"
               onClick={() => setRoomId(uuid())}
               type="button"
+              style={{ backgroundColor: "#06b6d4", color: "white", border: "none" }}
             >
               Generate
             </button>
             <button
-              className="btn btn-outline-danger btn-sm mr-2"
+              className="btn btn-outline-danger btn-sm mr-1"
               type="button"
+              style={{ backgroundColor: "#ef4444", color: "white", border: "none" }}
             >
               Copy
             </button>
@@ -77,8 +79,9 @@ const CreateRoomForm: React.FC<CreateRoomFormProps> = ({ uuid , socket, setUser}
         </div>
       </div>
       <button
-        className="mt-4 btn btn-primary btn-block form-control"
+        className="mt-4 btn btn-block btn-primary form-control"
         type="submit"
+        style={{ backgroundColor: "#06b6d4", color: "white", border: "none" }}
         onClick={handleCreateRoom}
       >
         Generate Room

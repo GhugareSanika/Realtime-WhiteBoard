@@ -1,3 +1,48 @@
+/* .background-container {
+    background-image: url("src/images/admin-login-background-images-8.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh;
+}
+*{
+    margin: 0;
+    padding: 0%;
+}
 .form-box{
     height: 400px;
 }
+   */
+
+   .background-container {
+    background-image: url('src/images/light-multicolor-vector-background-with-bubbles_6869-455.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed; /* Ensure it stays fixed while scrolling */
+    top: 0;
+    left: 0;
+    z-index: -1; /* Place it behind other content */
+  }
+  
+  .content-container {
+    position: relative; /* Ensure it is positioned above the background */
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+  .form-box {
+    height: 400px;
+    background-color: rgba(255, 255, 255, 0.253); /* Semi-transparent background */
+    backdrop-filter: blur(5px); /* Blur effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border-radius: 10px; /* Optional: adds rounded corners */
+    box-shadow: 2px 2px 6px rgb(249, 245, 249); /* Optional: adds a subtle shadow */
+    
+    border: 1px solid rgba(8, 8, 8, 0.18); /* Optional: adds a border to enhance the glass effect */
+}
+
+  

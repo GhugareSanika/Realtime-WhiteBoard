@@ -1,0 +1,30 @@
+/* Styles for the background image */
+.background {
+    position: fixed; /* Ensure it covers the entire viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('src/images/1072840-cream-colored-wallpaper-1920x1080-for-hd-1080p.jpg');
+    background-size: cover; /* Adjust to cover the viewport */
+    background-position: center;
+    z-index: -1; /* Ensure it's behind other content */
+  }
+  
+  .canvas-container {
+    position: relative; /* Allows positioning of children relative to this */
+    height: 70vh; /* Full viewport height */
+    width: 65vw; /* Full viewport width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow:  px 1px black;
+  }
+  
+  canvas {
+    /* Style your canvas as needed */
+    background-color: white; /* Ensures background image shows through */
+    /* Additional styles such as border, shadow, etc. */
+    
+  }
+  

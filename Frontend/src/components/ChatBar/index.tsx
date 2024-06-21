@@ -48,7 +48,7 @@ const Chat: React.FC<ChatProps> = ({ setOpenedChatTab, socket }) => {
       >
         Close
       </button>
-      <div
+      {/* <div
         className="w-100 mt-5 p-2 border border-1 border-white rounded-3"
         style={{ height: "70%" }}
       >
@@ -57,7 +57,24 @@ const Chat: React.FC<ChatProps> = ({ setOpenedChatTab, socket }) => {
             {chatMessage.name}: {chatMessage.message}
           </p>
         ))}
+      </div> */}
+
+      <div
+        className="w-100 mt-5 p-2 border border-1 border-white rounded-3"
+        style={{
+          height: "70%",
+          backgroundImage: "url('src/images/WhatsApp-Chat-theme-iPhone-2.webp')",
+          backgroundSize: "cover", // Adjust to fit the image to the container
+          backgroundPosition: "center", // Center the image
+        }}
+      >
+        {chat.map((chatMessage, index) => (
+          <p key={index} className="my-2 text-center w-100 py-1 border border-left-0 border-right-0">
+            {chatMessage.name}: {chatMessage.message}
+          </p>
+        ))}
       </div>
+
       <form onSubmit={handleSubmit} className="w-100 mt-4 d-flex rounded-3 align-items-center" style={{ position: 'relative' }}>
         <input
           type="text"
