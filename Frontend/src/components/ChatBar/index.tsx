@@ -38,7 +38,7 @@ const Chat: React.FC<ChatProps> = ({ setOpenedChatTab, socket }) => {
 
   return (
     <div 
-      className="position-fixed top-0 h-100 text-white bg-dark"
+      className="position-fixed z-1 top-0 h-100 text-white bg-dark"
       style={{ width: "250px", left: "0%" }}
     >
       <button 
@@ -48,17 +48,7 @@ const Chat: React.FC<ChatProps> = ({ setOpenedChatTab, socket }) => {
       >
         Close
       </button>
-      {/* <div
-        className="w-100 mt-5 p-2 border border-1 border-white rounded-3"
-        style={{ height: "70%" }}
-      >
-        {chat.map((chatMessage, index) => (
-          <p key={index} className="my-2 text-center w-100 py-1 border border-left-0 border-right-0">
-            {chatMessage.name}: {chatMessage.message}
-          </p>
-        ))}
-      </div> */}
-
+      
       <div
         className="w-100 mt-5 p-2 border border-1 border-white rounded-3"
         style={{

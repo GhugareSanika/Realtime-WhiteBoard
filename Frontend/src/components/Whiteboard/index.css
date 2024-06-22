@@ -1,4 +1,3 @@
-/* Styles for the background image */
 .background {
     position: fixed; /* Ensure it covers the entire viewport */
     top: 0;
@@ -18,13 +17,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow:  px 1px black;
+  }
+  .canvas-container-1 {
+    position: relative; /* Allows positioning of children relative to this */
+    height: 75vh; /* Full viewport height */
+    width: 60vw; /* Full viewport width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   
   canvas {
     /* Style your canvas as needed */
     background-color: white; /* Ensures background image shows through */
-    /* Additional styles such as border, shadow, etc. */
-    
   }
+
+  
   
