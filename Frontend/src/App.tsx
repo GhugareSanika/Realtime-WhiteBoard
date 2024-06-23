@@ -5,6 +5,9 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import RoomPage from './pages/RoomPage';
 import io from 'socket.io-client';
 import { ToastContainer, toast } from 'react-toastify';
+import './components/Whiteboard/index.css'; 
+import './components/Forms/index.css'; 
+import './pages/RoomPage/index.css';
 
 interface RoomData {
   name: string;
