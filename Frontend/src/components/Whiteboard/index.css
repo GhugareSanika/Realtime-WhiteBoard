@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('src/images/room.jpg');
+    background-image: url('src/assets/images/room.jpg');
     background-size: cover; /* Adjust to cover the viewport */
     background-position: center;
     z-index: -1; /* Ensure it's behind other content */

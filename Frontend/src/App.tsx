@@ -17,8 +17,8 @@ interface RoomData {
   presenter: boolean;
 }
 
-const server = "http://localhost:5000";
-//const server = "https://realtime-whiteboard-1-d3ap.onrender.com";
+//const server = "http://localhost:5000";
+const server = "https://realtime-whiteboard-1-d3ap.onrender.com";
 //https://realtime-whiteboard-1-d3ap.onrender.com
 const connectionOptions = {
   "force new connection": true,

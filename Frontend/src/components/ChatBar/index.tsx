@@ -53,7 +53,7 @@ const Chat: React.FC<ChatProps> = ({ setOpenedChatTab, socket }) => {
         className="w-100 mt-5 p-2 border border-1 border-white rounded-3"
         style={{
           height: "70%",
-          backgroundImage: "url('src/images/chat.webp')",
+          backgroundImage: "url('src/assets/images/chat.webp')",
           backgroundSize: "cover", // Adjust to fit the image to the container
           backgroundPosition: "center", // Center the image
         }}
@@ -78,7 +78,7 @@ const Chat: React.FC<ChatProps> = ({ setOpenedChatTab, socket }) => {
           onChange={(e: ChangeEvent<HTMLInputElement>) => setMessage(e.target.value)}
         />
         <img 
-          src="src/images/msg.png" // Path relative to the public directory
+          src="src/assets/images/msg.png" // Path relative to the public directory
           alt="icon" 
           style={{
             position: 'absolute',
