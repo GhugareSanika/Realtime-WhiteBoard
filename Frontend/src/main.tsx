@@ -8,6 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import 'react-toastify/dist/ReactToastify.min.css';
 
+import './components/Whiteboard/index.css'; // Adjust the path as necessary
+import './components/Forms/index.css'; // Example of another CSS file
+import './pages/RoomPage/index.css'
+
 const rootElement = document.getElementById('root');
 
 // Check if the root element exists before rendering
