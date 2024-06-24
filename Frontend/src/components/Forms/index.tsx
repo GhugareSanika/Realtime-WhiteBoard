@@ -1,5 +1,5 @@
 import React from 'react';
-import "./index.css";
+import "./index.css"
 import CreateRoomForm from './CreateRoomForm';
 import JoinRoomForm from './JoinRoomForm';
 import { Socket } from 'socket.io-client';

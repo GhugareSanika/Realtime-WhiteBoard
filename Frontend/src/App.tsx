@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './App.css';
+//import './App.css';
 import Forms from './components/Forms';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import RoomPage from './pages/RoomPage';
@@ -9,10 +9,10 @@ import './components/Whiteboard/index.css';
 import './components/Forms/index.css'; 
 import './pages/RoomPage/index.css';
 
-import chat from './assets/images/chat.webp';
-import Home from './assets/images/Home.jpg';
-import msg from './assets/images/msg.png';
-import room from './assets/images/room.jpg';
+// import chat from './assets/images/chat.webp';
+// import Home from './assets/images/Home.jpg';
+// import msg from './assets/images/msg.png';
+// import room from './assets/images/room.jpg';
 
 interface RoomData {
   name: string;
@@ -107,10 +107,10 @@ const App: React.FC = () => {
           element={user ? <RoomPage user={user} socket={socket} users={users} /> : <Navigate to="/" />}
         />
       </Routes>
-      <img src={chat} alt="chat" />
+      {/* <img src={chat} alt="chat" />
       <img src={Home} alt="Home" />
       <img src={msg} alt="msg" />
-      <img src={room} alt="room" />
+      <img src={room} alt="room" /> */}
     </div>
   );
 };
